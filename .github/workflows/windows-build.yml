@@ -11,15 +11,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: List files
+      - name: Debug - List root files
         shell: pwsh
         run: |
-          Get-ChildItem
-          if (Test-Path package-lock.json) {
-            Write-Host "package-lock.json found!"
-          } else {
-            Write-Host "package-lock.json NOT found!"
-          }
+          Write-Host "=== Files in root ==="
+          Get-ChildItem -Path . -File | Select-Object Name
+          Write-Host "=== package-lock.json exists? ==="
+          Test-Path .\package-lock.json
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -37,8 +35,28 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Generate package-lock.json if missing
+        shell: pwsh
+        run: |
+          if (-not (Test-Path .\package-lock.json)) {
+            Write-Host "package-lock.json not found, generating..."
+            npm install --package-lock-only
+          } else {
+            Write-Host "package-lock.json found"
+          }
+
       - name: Install Node dependencies
         run: npm install
+
+      - name: Debug - Check files after npm install
+        shell: pwsh
+        run: |
+          Write-Host "=== Files after npm install ==="
+          Get-ChildItem -Path . -File | Select-Object Name
+          Write-Host "=== package-lock.json exists? ==="
+          Test-Path .\package-lock.json
+          Write-Host "=== node_modules exists? ==="
+          Test-Path .\node_modules
 
       - name: Install NativePHP
         run: php artisan native:install
