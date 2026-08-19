@@ -8,8 +8,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
+
+      # ─────────────────────────────
+      # SOURCE
+      # ─────────────────────────────
+
       - name: Checkout
         uses: actions/checkout@v5
+
+
+      # ─────────────────────────────
+      # PHP
+      # ─────────────────────────────
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -18,11 +28,22 @@ jobs:
           extensions: sqlite3, pdo_sqlite
           tools: composer
 
+
+      # ─────────────────────────────
+      # NODE
+      # ─────────────────────────────
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+
+      # ─────────────────────────────
+      # DEPENDENCIES
+      # ─────────────────────────────
 
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -30,11 +51,45 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
+
+      # ─────────────────────────────
+      # NATIVEPHP
+      # ─────────────────────────────
+
+      - name: Install NativePHP
+        run: php artisan native:install
+
+
+      # ─────────────────────────────
+      # FRONTEND
+      # ─────────────────────────────
+
       - name: Build frontend
         run: npm run build
 
+
+      # ─────────────────────────────
+      # WINDOWS BUILD
+      # ─────────────────────────────
+
       - name: Build NativePHP Windows
         run: php artisan native:build win
+
+
+      # ─────────────────────────────
+      # DEBUG BUILD OUTPUT
+      # ─────────────────────────────
+
+      - name: Find Windows builds
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path . -Recurse -Include *.exe,*.msi |
+            Select-Object FullName
+
+
+      # ─────────────────────────────
+      # ARTIFACT
+      # ─────────────────────────────
 
       - name: Upload Windows build
         uses: actions/upload-artifact@v4
