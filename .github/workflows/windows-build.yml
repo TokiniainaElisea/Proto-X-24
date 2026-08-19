@@ -11,12 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Debug - List files
-        shell: pwsh
-        run: |
-          Write-Host "=== Files in root ==="
-          Get-ChildItem -Path . -File | Select-Object Name
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -30,18 +24,11 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install PHP dependencies
-        run: composer update --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Generate package-lock.json if missing
-        shell: pwsh
+      - name: Install PHP dependencies for Windows
         run: |
-          if (-not (Test-Path .\package-lock.json)) {
-            Write-Host "package-lock.json not found, generating..."
-            npm install --package-lock-only
-          } else {
-            Write-Host "package-lock.json found"
-          }
+          # Supprimer l'ancien lock file pour éviter les conflits de plateforme
+          Remove-Item -Force composer.lock -ErrorAction SilentlyContinue
+          composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install Node dependencies
         run: npm install
