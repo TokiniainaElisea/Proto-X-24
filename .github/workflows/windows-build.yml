@@ -8,18 +8,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-
-      # ─────────────────────────────
-      # SOURCE
-      # ─────────────────────────────
-
       - name: Checkout
         uses: actions/checkout@v5
 
-
-      # ─────────────────────────────
-      # PHP
-      # ─────────────────────────────
+      - name: List files
+        shell: pwsh
+        run: |
+          Get-ChildItem
+          if (Test-Path package-lock.json) {
+            Write-Host "package-lock.json found!"
+          } else {
+            Write-Host "package-lock.json NOT found!"
+          }
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -28,59 +28,32 @@ jobs:
           extensions: sqlite3, pdo_sqlite
           tools: composer
 
-
-     
-
-
-      # ─────────────────────────────
-      # DEPENDENCIES
-      # ─────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install Node dependencies
-        run: npm ci
-
-
-      # ─────────────────────────────
-      # NATIVEPHP
-      # ─────────────────────────────
+        run: npm install
 
       - name: Install NativePHP
         run: php artisan native:install
 
-
-      # ─────────────────────────────
-      # FRONTEND
-      # ─────────────────────────────
-
       - name: Build frontend
         run: npm run build
 
-
-      # ─────────────────────────────
-      # WINDOWS BUILD
-      # ─────────────────────────────
-
       - name: Build NativePHP Windows
         run: php artisan native:build win
-
-
-      # ─────────────────────────────
-      # DEBUG BUILD OUTPUT
-      # ─────────────────────────────
 
       - name: Find Windows builds
         shell: pwsh
         run: |
           Get-ChildItem -Path . -Recurse -Include *.exe,*.msi |
             Select-Object FullName
-
-
-      # ─────────────────────────────
-      # ARTIFACT
-      # ─────────────────────────────
 
       - name: Upload Windows build
         uses: actions/upload-artifact@v4
