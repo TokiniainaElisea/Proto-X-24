@@ -28,6 +28,7 @@ jobs:
         run: |
           # Supprimer l'ancien lock file pour éviter les conflits de plateforme
           Remove-Item -Force composer.lock -ErrorAction SilentlyContinue
+          composer update --no-interaction --prefer-dist --optimize-autoloader
           composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install Node dependencies
