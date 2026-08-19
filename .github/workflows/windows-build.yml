@@ -15,7 +15,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: sqlite3, pdo_sqlite
+          extensions: sqlite3, pdo_sqlite, fileinfo, mbstring, openssl, curl, zip, gd
           tools: composer
 
       - name: Setup Node.js
@@ -26,9 +26,8 @@ jobs:
 
       - name: Install PHP dependencies for Windows
         run: |
-          # Supprimer l'ancien lock file pour éviter les conflits de plateforme
           Remove-Item -Force composer.lock -ErrorAction SilentlyContinue
-          composer install --no-interaction --prefer-dist --optimize-autoloader
+          composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-*
 
       - name: Install Node dependencies
         run: npm install
