@@ -22,7 +22,7 @@
 
             </div>
 
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+            <a href="{{route('show_product', $product) }}" class="btn btn-outline-secondary">
 
                 <i class="bi bi-arrow-left me-1"></i>
                 Retour

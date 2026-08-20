@@ -124,10 +124,11 @@ class ProductController extends Controller
     //modify product informations
     public function modify_product(Product $product)
     {
-        return view('products.product.edit_product', ['product' => $product,
-            'category'                                              => Category::find($product->category_id),
-            'categories'                                            => Category::all(),
-            'providers'                                             => Provider::all()]);
+        return view('products.product.edit_product', [
+            'product'    => $product,
+            'category'   => Category::find($product->category_id),
+            'categories' => Category::all(),
+            'providers'  => Provider::all()]);
     }
 
     //update product

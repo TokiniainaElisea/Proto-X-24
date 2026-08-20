@@ -30,6 +30,7 @@ class MouvementController extends Controller
         return view('products.product.mouvement', [
             'product_id'=> $product->id,
             'stocks' => $stocks->paginate(10),
+            'product' => $product
         ]);
     }
 

@@ -10,7 +10,7 @@
                     d-flex align-items-center justify-content-center me-3"
                 style="width: 52px; height: 52px;">
 
-                <i class="bi bi-info fs-5"> </i>
+                <i class="bi bi-info fs-1"> </i>
 
             </div>
 

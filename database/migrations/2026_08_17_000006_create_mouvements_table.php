@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('enter_date')->nullable();
             $table->integer('initial_quantity')->nullable();
             $table->integer('in_stock')->nullable();
-            $table->integer('provider_price')->nullable();
+            $table->double('provider_price')->nullable();
             $table->foreignId('product_id')
                 ->nullable()
                 ->constrained('products')
