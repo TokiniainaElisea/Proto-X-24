@@ -28,6 +28,7 @@ jobs:
         run: |
           Remove-Item -Force composer.lock -ErrorAction SilentlyContinue
           composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
+          composer require livewire/livewire --no-interaction --prefer-dist
 
       - name: Create .env file
         run: |
