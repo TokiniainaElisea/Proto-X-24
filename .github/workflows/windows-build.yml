@@ -26,7 +26,7 @@ jobs:
 
       - name: Install PHP dependencies for Windows
         run: |
-          Remove-Item -Force composer.lock -ErrorAction SilentlyContinue
+          composer config platform-check false
           composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
           composer require livewire/livewire --no-interaction --prefer-dist
 
