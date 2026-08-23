@@ -9,7 +9,7 @@ use App\Models\Stock\Mouvement;
 use App\Models\Stock\Provider;
 use Illuminate\Database\Eloquent\Model;
 
-class product extends Model
+class Product extends Model
 {
     //
     protected $fillable = [
