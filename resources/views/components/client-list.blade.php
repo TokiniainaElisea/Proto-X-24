@@ -20,7 +20,7 @@ new class extends Component {
             $query = $query->whereLike('name', '%' . $this->search . '%');
         }
 
-        return view('components.⚡client-list', [
+        return view('components.client-list', [
             'clients' => $query->paginate(10),
         ]);
     }
