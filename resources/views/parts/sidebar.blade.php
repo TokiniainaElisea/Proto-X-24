@@ -56,20 +56,6 @@
             </a>
 
         </li>
-
-        <li class="nav-item">
-
-            <a href="{{ route('provider') }}"
-                class="nav-link text-white rounded-3 {{ request()->routeIs('provider*') ? 'active bg-primary' : '' }}">
-
-                <i class="bi bi-truck me-2"></i>
-                Fournisseurs
-
-            </a>
-
-        </li>
-
-
         {{-- Finance --}}
         <li class="nav-item mt-3">
 
@@ -111,10 +97,29 @@
             </a>
 
         </li>
+
         <li class="nav-item">
 
-            <a class="nav-link text-white rounded-3" data-bs-toggle="collapse"
-                href="#settingsMenu" role="button" aria-expanded="false" aria-controls="settingsMenu">
+            <a href="{{ route('provider') }}"
+                class="nav-link text-white rounded-3 {{ request()->routeIs('provider*') ? 'active bg-primary' : '' }}">
+
+                <i class="bi bi-truck me-2"></i>
+                Fournisseurs
+
+            </a>
+
+        </li>
+        <li class="nav-item mt-3">
+
+            <small class="text-uppercase text-secondary fw-bold px-3">
+                Autre
+            </small>
+
+        </li>
+        <li class="nav-item">
+
+            <a class="nav-link text-white rounded-3" data-bs-toggle="collapse" href="#settingsMenu" role="button"
+                aria-expanded="false" aria-controls="settingsMenu">
 
                 <span>
                     <i class="bi bi-gear me-2"></i>
@@ -129,7 +134,7 @@
 
                     <li class="nav-item mb-1">
 
-                        <a href="{{route('company')}}" class="nav-link">
+                        <a href="{{ route('company') }}" class="nav-link">
 
                             <i class="bi bi-building me-1"></i>
                             Société
@@ -140,7 +145,7 @@
 
                     <li class="nav-item mb-1">
 
-                        <a href="{{route('numbering')}}" class="nav-link">
+                        <a href="{{ route('numbering') }}" class="nav-link">
 
                             <i class="bi bi-hash me-1"></i>
                             Préfixes
@@ -150,7 +155,7 @@
                     </li>
                     <li class="nav-item mb-1">
 
-                        <a href="{{route('about')}}" class="nav-link">
+                        <a href="{{ route('about') }}" class="nav-link">
 
                             <i class="bi bi-hash me-1"></i>
                             À propos
