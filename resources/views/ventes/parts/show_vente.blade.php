@@ -10,9 +10,11 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
 
             <div>
-                <a href="{{ route('ventes') }}" class="btn btn-outline-warning mb-2">
-                    <i class="bi bi-arrow-left"></i>
+                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+
+                    <i class="bi bi-arrow-left me-1"></i>
                     Retour
+
                 </a>
 
                 <h2 class="fw-bold mb-0">
@@ -30,7 +32,8 @@
                     <i class="bi bi-check-circle-fill me-1"></i>
                     Vente enregistrée
                 </span>
-                <a href="{{ route('downloadInvoice', $sale) }}" class="btn btn-primary"> <i class="bi bi-download"></i> Facture </a>
+                <a href="{{ route('downloadInvoice', $sale) }}" class="btn btn-primary"> <i class="bi bi-download"></i>
+                    Facture </a>
             </div>
 
         </div>

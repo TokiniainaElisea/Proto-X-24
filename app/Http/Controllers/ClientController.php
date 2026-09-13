@@ -64,4 +64,10 @@ class ClientController extends Controller
         $client->delete();
         return to_route('client')->with('success', 'Suppréssion effectuée');
     }
+
+    //show client
+    public function show_client($id){
+        $client = Client::with('sales')->findOrFail($id);
+        return view('clients.parts.client_card', ['client' => $client]);
+    }
 }

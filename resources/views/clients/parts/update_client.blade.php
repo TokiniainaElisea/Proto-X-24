@@ -1,247 +1,213 @@
 @php
-$id;
-$client;
+    $id;
+    $client;
 @endphp
 
-<div class="modal fade shadow-lg" tabindex="-1" aria-hidden="true" id="{{$id}}">
+<div class="modal fade shadow-lg" tabindex="-1" aria-hidden="true" id="{{ $id }}">
 
-<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 
-    <div class="modal-content border-0 shadow">
+        <div class="modal-content border-0 shadow">
 
-        {{-- Header --}}
-        <div class="modal-header bg-dark text-white">
+            {{-- Header --}}
+            <div class="modal-header bg-dark text-white">
 
-            <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
 
-                <div
-                    class="bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center me-3"
-                    style="width: 42px; height: 42px;">
+                    <div class="bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center me-3"
+                        style="width: 42px; height: 42px;">
 
-                    <i class="bi bi-person-gear fs-5"></i>
+                        <i class="bi bi-person-gear fs-5"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="modal-title fw-bold mb-0">
+                            Modifier le client
+                        </h5>
+
+                        <small class="text-secondary">
+                            {{ $client->title }} {{ $client->name }} {{ $client->firstname }}
+                        </small>
+
+                    </div>
 
                 </div>
 
-                <div>
-
-                    <h5 class="modal-title fw-bold mb-0">
-                        Modifier le client
-                    </h5>
-
-                    <small class="text-secondary">
-                        {{$client->title}} {{$client->name}} {{$client->firstname}}
-                    </small>
-
-                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                </button>
 
             </div>
 
-            <button
-                type="button"
-                class="btn-close btn-close-white"
-                data-bs-dismiss="modal"
-                aria-label="Close">
-            </button>
 
-        </div>
+            {{-- Corps --}}
+            <div class="modal-body p-4">
 
+                <form action="{{ route('update_client', $client) }}" method="post">
 
-        {{-- Corps --}}
-        <div class="modal-body p-4">
+                    @csrf
+                    @method('put')
 
-            <form action="{{route('update_client', $client)}}" method="post">
+                    {{-- Civilité --}}
+                    <div class="mb-3">
 
-                @csrf
-                @method('put')
+                        <label for="civilité" class="form-label fw-semibold">
 
-                {{-- Civilité --}}
-                <div class="mb-3">
+                            <i class="bi bi-person-vcard text-primary me-1"></i>
+                            Civilité
 
-                    <label
-                        for="civilité"
-                        class="form-label fw-semibold">
+                        </label>
 
-                        <i class="bi bi-person-vcard text-primary me-1"></i>
-                        Civilité
+                        <select name="title" class="form-select">
 
-                    </label>
+                            <option value="{{ $client->title }}">
+                                {{ $client->title }}
+                            </option>
 
-                    <select
-                        name="title"
-                        class="form-select">
+                            <option value="Mr.">
+                                Mr.
+                            </option>
 
-                        <option value="{{$client->title}}">
-                            {{$client->title}}
-                        </option>
+                            <option value="Mme.">
+                                Mme.
+                            </option>
 
-                        <option value="Mr.">
-                            Mr.
-                        </option>
+                            <option value="Mle.">
+                                Mle.
+                            </option>
 
-                        <option value="Mme.">
-                            Mme.
-                        </option>
+                        </select>
 
-                        <option value="Mle.">
-                            Mle.
-                        </option>
+                    </div>
 
-                    </select>
-
-                </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label fw-semibold"> Type </label>
+                        <select name="client_type" class="form-select">
+                            <option value="Particulier"> Particulier </option>
+                            <option value="Société"> Société </option>
+                        </select>
+                    </div>
 
 
-                {{-- Nom / Prénom --}}
-                <div class="row">
+                    {{-- Nom / Prénom --}}
+                    <div class="row">
 
-                    <div class="col-6">
+                        <div class="col-6">
 
-                        <div class="mb-3">
+                            <div class="mb-3">
 
-                            <label
-                                for="name"
-                                class="form-label fw-semibold">
+                                <label for="name" class="form-label fw-semibold">
 
-                                Nom
+                                    Nom
 
-                            </label>
+                                </label>
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="name"
-                                value="{{$client->name}}">
+                                <input type="text" class="form-control" name="name" value="{{ $client->name }}">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="mb-3">
+
+                                <label for="firstname" class="form-label fw-semibold">
+
+                                    Prénom
+
+                                </label>
+
+                                <input type="text" name="firstname" class="form-control"
+                                    value="{{ $client->firstname }}">
+
+                            </div>
 
                         </div>
 
                     </div>
 
 
-                    <div class="col-6">
+                    {{-- Téléphone --}}
+                    <div class="mb-3">
 
-                        <div class="mb-3">
+                        <label for="phone" class="form-label fw-semibold">
 
-                            <label
-                                for="firstname"
-                                class="form-label fw-semibold">
+                            <i class="bi bi-telephone text-success me-1"></i>
+                            Téléphone
 
-                                Prénom
+                        </label>
 
-                            </label>
+                        <div class="input-group">
 
-                            <input
-                                type="text"
-                                name="firstname"
-                                class="form-control"
-                                value="{{$client->firstname}}">
+                            <span class="input-group-text">
+                                <i class="bi bi-phone"></i>
+                            </span>
+
+                            <input type="number" class="form-control" name="phone" value="{{ $client->phone }}">
 
                         </div>
 
                     </div>
 
-                </div>
 
+                    {{-- Adresse --}}
+                    <div class="mb-3">
 
-                {{-- Téléphone --}}
-                <div class="mb-3">
+                        <label for="adress" class="form-label fw-semibold">
 
-                    <label
-                        for="phone"
-                        class="form-label fw-semibold">
+                            <i class="bi bi-geo-alt text-danger me-1"></i>
+                            Adresse / Lot
 
-                        <i class="bi bi-telephone text-success me-1"></i>
-                        Téléphone
+                        </label>
 
-                    </label>
-
-                    <div class="input-group">
-
-                        <span class="input-group-text">
-                            <i class="bi bi-phone"></i>
-                        </span>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="phone"
-                            value="{{$client->phone}}">
+                        <input type="text" name="adress" class="form-control" value="{{ $client->adress }}">
 
                     </div>
 
-                </div>
+
+                    {{-- Ville --}}
+                    <div class="mb-4">
+
+                        <label for="town" class="form-label fw-semibold">
+
+                            <i class="bi bi-buildings text-primary me-1"></i>
+                            Ville
+
+                        </label>
+
+                        <input type="text" name="town" class="form-control" value="{{ $client->town }}">
+
+                    </div>
 
 
-                {{-- Adresse --}}
-                <div class="mb-3">
+                    {{-- Actions --}}
+                    <div class="d-flex justify-content-end gap-2">
 
-                    <label
-                        for="adress"
-                        class="form-label fw-semibold">
+                        <button type="reset" class="btn btn-outline-secondary">
 
-                        <i class="bi bi-geo-alt text-danger me-1"></i>
-                        Adresse / Lot
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Réinitialiser
 
-                    </label>
+                        </button>
 
-                    <input
-                        type="text"
-                        name="adress"
-                        class="form-control"
-                        value="{{$client->adress}}">
+                        <button type="submit" class="btn btn-warning">
 
-                </div>
+                            <i class="bi bi-floppy-fill me-1"></i>
+                            Enregistrer
 
+                        </button>
 
-                {{-- Ville --}}
-                <div class="mb-4">
+                    </div>
 
-                    <label
-                        for="town"
-                        class="form-label fw-semibold">
+                </form>
 
-                        <i class="bi bi-buildings text-primary me-1"></i>
-                        Ville
-
-                    </label>
-
-                    <input
-                        type="text"
-                        name="town"
-                        class="form-control"
-                        value="{{$client->town}}">
-
-                </div>
-
-
-                {{-- Actions --}}
-                <div class="d-flex justify-content-end gap-2">
-
-                    <button
-                        type="reset"
-                        class="btn btn-outline-secondary">
-
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>
-                        Réinitialiser
-
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="btn btn-warning">
-
-                        <i class="bi bi-floppy-fill me-1"></i>
-                        Enregistrer
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 </div>

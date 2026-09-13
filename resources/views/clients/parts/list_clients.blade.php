@@ -184,6 +184,11 @@
 
                                             </button>
 
+                                            {{-- La fiche --}}
+                                            <a href="{{ route('show_client', $client->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
 
                                             {{-- Modals --}}
                                             @include('clients.parts.update_client', [

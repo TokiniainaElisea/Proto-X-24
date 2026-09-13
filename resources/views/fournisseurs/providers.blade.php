@@ -6,43 +6,38 @@
     <div class="container p-2">
         @if (session('success'))
             <div class="card-body bg-success text-light">
-                {{session('success')}}
+                {{ session('success') }}
             </div>
         @endif
         @if (session('failure'))
             <div class="card-body bg-danger text-light">
-                {{session('failure')}}
+                {{ session('failure') }}
             </div>
         @endif
-        
+
         <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <div>
+            <div>
 
-        <h2 class="fw-bold mb-1">
-            <i class="bi bi-truck text-primary me-2"></i>
-            Gestion des fournisseurs
-        </h2>
+                <h2 class="fw-bold mb-1">
+                    <i class="bi bi-truck text-primary me-2"></i>
+                    Gestion des fournisseurs
+                </h2>
 
-        <small class="text-muted">
-            Gérez les fournisseurs et leurs informations de contact.
-        </small>
+                <small class="text-muted">
+                    Gérez les fournisseurs et leurs informations de contact.
+                </small>
 
-    </div>
+            </div>
 
-    <button
-        type="button"
-        class="btn btn-success"
-        data-bs-toggle="modal"
-        data-bs-target="#new_provider">
+            <a href="{{ route('new_privider_form') }}" class="btn btn-success">
 
-        <i class="bi bi-plus-circle-fill me-1"></i>
-        Nouveau fournisseur
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Nouveau fournisseur
 
-    </button>
+            </a>
 
-</div>
+        </div>
         @include('fournisseurs.parts.provider_table')
-        @include('fournisseurs.parts.new_provider', ['id'=> 'new_provider'])
     </div>
 @endsection
