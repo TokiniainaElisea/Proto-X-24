@@ -76,7 +76,8 @@
 
                             <td>
 
-                                <a href="{{route('show_vente', $sale)}}" class="btn btn-info btn-sm text-white" title="Voir la vente">
+                                <a href="{{ route('show_vente', $sale) }}" class="btn btn-info btn-sm text-white"
+                                    title="Voir la vente">
 
                                     <i class="bi bi-eye-fill"></i>
 

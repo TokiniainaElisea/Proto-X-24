@@ -3,14 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProviderRequest;
+use App\Http\Requests\ProviderSearchRequest;
 use App\Models\Stock\Provider;
 use Illuminate\Http\Request;
 
 class ProviderController extends Controller
 {
-    public function index()
+    public function index(ProviderSearchRequest $request)
     {
-        return view('fournisseurs.providers', ['providers' => Provider::paginate(10)]);
+        $query = Provider::query();
+
+        if($request->has('name_provider') && !empty($request->name_provider)){
+            $query->where('name_provider', 'LIKE', '%'.$request->name_provider.'%');
+        }
+
+        if($request->has('mail') && !empty($request->mail)){
+            $query->where('mail', 'LIKE', '%'.$request->mail.'%');
+        }
+
+        if($request->has('phone') && !empty($request->phone)){
+            $query->where('phone', 'LIKE', '%'.$request->phone.'%');
+        }
+        return view('fournisseurs.providers', ['providers' => $query->paginate(10)]);
     }
     // nouveau fournisseur
     public function new_privider_form(){

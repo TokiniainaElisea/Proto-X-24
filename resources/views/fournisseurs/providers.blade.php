@@ -38,6 +38,7 @@
             </a>
 
         </div>
+        @include('fournisseurs.parts.filter_provider')
         @include('fournisseurs.parts.provider_table')
     </div>
 @endsection
