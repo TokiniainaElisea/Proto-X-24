@@ -48,6 +48,11 @@ new class extends Component {
             if (!isset($product['quantity']) || !is_numeric($product['quantity']) || (int) $product['quantity'] < 1) {
                 return false;
             }
+
+            if($product['quantity'] > $product['in_stock']){
+                return false;
+            }
+
         }
 
         return true;
@@ -71,7 +76,7 @@ new class extends Component {
     public $note = '';
 
     #[On('product-selected')]
-    public function selectProducts($product)
+    public function selectProducts($product, $stock)
     {
         foreach ($this->selectedProducts as $key => $value) {
             if ($value['id'] == $product['id']) {
@@ -81,6 +86,7 @@ new class extends Component {
         }
 
         $product['quantity'] = 1;
+        $product['in_stock'] = $stock;
         $this->selectedProducts[] = $product;
         //dd($this->selectedProducts);
     }
@@ -225,13 +231,13 @@ new class extends Component {
                                     <i class="bi bi-boxes me-1"></i>
 
                                     En stock :
-                                    {{ $product['mouvement'][0]['in_stock'] }}
+                                    {{ $product['in_stock'] }}
 
                                 </small>
 
                                 <span class="text-success fw-semibold">
 
-                                    {{ number_format($product['price'] * $product['quantity'], 0, ',', ' ') }}
+                                    {{ number_format($product['price'] * (int) $product['quantity'], 0, ',', ' ') }}
                                     Ar
 
                                 </span>
@@ -265,11 +271,11 @@ new class extends Component {
 
                         </div>
 
-                        @error('selectedProducts.' . $key . '.quantity')
+                        @if($product['in_stock'] < $selectedProducts[$key]['quantity'])
                             <small class="text-danger">
-                                {{ $message }}
+                                Quantité invalide
                             </small>
-                        @enderror
+                        @endif
 
                     </div>
 

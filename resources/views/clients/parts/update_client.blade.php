@@ -91,15 +91,13 @@
 
 
                     {{-- Nom / Prénom --}}
-                    <div class="row">
 
-                        <div class="col-6">
 
                             <div class="mb-3">
 
                                 <label for="name" class="form-label fw-semibold">
 
-                                    Nom
+                                    Nom / Raison social
 
                                 </label>
 
@@ -107,10 +105,9 @@
 
                             </div>
 
-                        </div>
 
 
-                        <div class="col-6">
+                    
 
                             <div class="mb-3">
 
@@ -124,11 +121,6 @@
                                     value="{{ $client->firstname }}">
 
                             </div>
-
-                        </div>
-
-                    </div>
-
 
                     {{-- Téléphone --}}
                     <div class="mb-3">
