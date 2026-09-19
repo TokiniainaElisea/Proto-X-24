@@ -1,51 +1,51 @@
 @extends('layout')
 
 @section('content')
-<div class="container">
+    <div class="container">
 
-{{-- En-tête --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+        @if (session('success'))
+            <div class="card-body bg-success text-light mb-2">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('failure'))
+            <div class="card-body bg-danger text-light mb-2">
+                {{ session('failure') }}
+            </div>
+        @endif
 
-    <div>
+        {{-- En-tête --}}
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2 class="fw-bold mb-1">
+            <div>
 
-            <i class="bi bi-cart-plus-fill text-success me-2"></i>
-            Nouvelle vente
+                <h2 class="fw-bold mb-1">
 
-        </h2>
+                    <i class="bi bi-cart-plus-fill text-success me-2"></i>
+                    Nouvelle vente
 
-        <small class="text-muted">
+                </h2>
 
-            Créez une nouvelle commande et renseignez les informations du client.
+                <small class="text-muted">
 
-        </small>
+                    Créez une nouvelle commande et renseignez les informations du client.
 
-    </div>
+                </small>
 
-    <a
-        href="{{ route('ventes') }}"
-        class="btn btn-outline-secondary">
+            </div>
 
-        <i class="bi bi-arrow-left me-1"></i>
-        Retour aux ventes
+            <a href="{{ route('ventes') }}" class="btn btn-outline-secondary">
 
-    </a>
+                <i class="bi bi-arrow-left me-1"></i>
+                Retour aux ventes
 
-</div>
+            </a>
+
+        </div>
 
 
-{{-- Création de la commande --}}
-<div class="card border-0 shadow-sm mb-4">
-
-    <div class="card-body p-0">
-
+        {{-- Création de la commande --}}
         <livewire:order-page />
 
     </div>
-
-</div>
-
-</div>
-
 @endsection

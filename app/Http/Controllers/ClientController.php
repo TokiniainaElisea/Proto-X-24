@@ -50,7 +50,7 @@ class ClientController extends Controller
         $client->update([
             'client_number' => $client_number
         ]);
-        return to_route('client')->with('success', 'Client(e) ajouté(e) avec succès');
+        return redirect()->back()->with('success', 'Client(e) ajouté(e) avec succès');
     }
 
     //update new client

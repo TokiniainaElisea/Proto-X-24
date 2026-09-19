@@ -5,12 +5,12 @@
 @section('content')
     <div class="container p-2">
         @if (session('success'))
-            <div class="card-body bg-success text-light">
+            <div class="card-body bg-success text-light mb-2">
                 {{ session('success') }}
             </div>
         @endif
         @if (session('failure'))
-            <div class="card-body bg-danger text-light">
+            <div class="card-body bg-danger text-light mb-2">
                 {{ session('failure') }}
             </div>
         @endif

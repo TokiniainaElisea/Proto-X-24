@@ -38,7 +38,7 @@ class SalesController extends Controller
         }
 
         return view('ventes.ventes', [
-            'sales' => $sales->latest()->paginate(5),
+            'sales' => $sales->latest()->paginate(10),
         ]);
     }
 
