@@ -134,36 +134,32 @@ class ProductController extends Controller
     //update product
     public function update_product(UpdateProductRequest $request, Product $product)
     {
+
         $_product = Product::find($product->id)->load(['detail', 'mouvement']);
 
         $credentials = $request->validated(); //validated data
 
         //update image
         if ($request->hasFile('image_path')) {
-            // 1. Supprimer l'ancienne photo si elle existe
-            if ($product->image_path && ! empty($product->image_path)) {
+            // Supprimer l'ancienne photo si elle existe
+            if ($product->image_path && !empty($product->image_path)) {
                 $oldImagePath = base_path('public/' . $product->image_path);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath); // Suppression du fichier
                 }
             }
 
-            // 2. Upload de la nouvelle photo
+            // Upload de la nouvelle photo
             $file = $request->file('image_path');
 
-            // 📁 Dossier cible (même logique que dans store)
+            // Dossier cible 
             $path = base_path('public/uploads/product');
-
-            // 📁 Création du dossier s'il n'existe pas
-            if (! file_exists($path)) {
-                mkdir($path, 0777, true);
-            }
 
             // 🏷️ Nom unique
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
             // 📦 Move du fichier
-            $file->move($path, $filename);
+            $file->copy($path, $filename);
 
             // 💾 Chemin à stocker en DB
             $credentials['image_path'] = 'uploads/product/' . $filename;

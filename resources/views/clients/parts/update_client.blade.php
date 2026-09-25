@@ -93,34 +93,29 @@
                     {{-- Nom / Prénom --}}
 
 
-                            <div class="mb-3">
+                    <div class="mb-3">
 
-                                <label for="name" class="form-label fw-semibold">
+                        <label for="name" class="form-label fw-semibold">
 
-                                    Nom / Raison social
+                            Nom / Raison social
 
-                                </label>
+                        </label>
 
-                                <input type="text" class="form-control" name="name" value="{{ $client->name }}">
+                        <input type="text" class="form-control" name="name" value="{{ $client->name }}">
 
-                            </div>
+                    </div>
 
+                    <div class="mb-3">
 
+                        <label for="firstname" class="form-label fw-semibold">
 
-                    
+                            Prénom
 
-                            <div class="mb-3">
+                        </label>
 
-                                <label for="firstname" class="form-label fw-semibold">
+                        <input type="text" name="firstname" class="form-control" value="{{ $client->firstname }}">
 
-                                    Prénom
-
-                                </label>
-
-                                <input type="text" name="firstname" class="form-control"
-                                    value="{{ $client->firstname }}">
-
-                            </div>
+                    </div>
 
                     {{-- Téléphone --}}
                     <div class="mb-3">

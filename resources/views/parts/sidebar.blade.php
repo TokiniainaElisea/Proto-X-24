@@ -25,7 +25,7 @@
 
 
         {{-- Gestion --}}
-        <li class="nav-item mt-3">
+        <li class="nav-item mt-1">
 
             <small class="text-uppercase text-secondary fw-bold px-3">
                 Gestion
@@ -56,8 +56,19 @@
             </a>
 
         </li>
+        <li class="nav-item">
+
+            <a href="{{ route('devis') }}"
+                class="nav-link text-white rounded-3 {{ request()->routeIs('devis*') ? 'active bg-primary' : '' }}">
+
+                <i class="bi bi-file-earmark-text me-2"></i>
+                Devis
+
+            </a>
+
+        </li>
         {{-- Finance --}}
-        <li class="nav-item mt-3">
+        <li class="nav-item mt-1">
 
             <small class="text-uppercase text-secondary fw-bold px-3">
                 Finance
@@ -76,9 +87,20 @@
 
         </li>
 
+        <li class="nav-item">
+
+            <a href="{{ route('bilan') }}"
+                class="nav-link text-white rounded-3 {{ request()->routeIs('bilan') ? 'active bg-primary' : '' }} ">
+                <i class="bi bi-receipt me-2"></i>
+                Dépenses
+
+            </a>
+
+        </li>
+
 
         {{-- Relations --}}
-        <li class="nav-item mt-3">
+        <li class="nav-item mt-1">
 
             <small class="text-uppercase text-secondary fw-bold px-3">
                 Relations
@@ -109,7 +131,7 @@
             </a>
 
         </li>
-        <li class="nav-item mt-3">
+        <li class="nav-item mt-1">
 
             <small class="text-uppercase text-secondary fw-bold px-3">
                 Autre

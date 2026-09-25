@@ -4,6 +4,7 @@ use App\Http\Controllers\BilanController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DevisController;
 use App\Http\Controllers\MouvementController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
@@ -135,6 +136,7 @@ Route::prefix('/bilan')->controller(BilanController::class)->group(function(){
     Route::get('/', 'index')->name('bilan');
 });
 
+//paramètres route
 Route::prefix('/paramètre')->controller(SettingController::class)->group(function(){
     //company
     Route::get('/company', 'company')->name('company');
@@ -144,4 +146,22 @@ Route::prefix('/paramètre')->controller(SettingController::class)->group(functi
 
     //about 
     Route::get('/about', 'about')->name('about');
+});
+
+//devis route
+Route::prefix('/devis')->controller(DevisController::class)->group(function(){
+    //index
+    Route::get('/', 'index')->name('devis');
+
+    //new devis
+    Route::get('/new_devis', 'new_devis')->name('new_devis');
+
+    //show devis
+    Route::get('/show_devis/{quote}', 'show_devis')->name('show_devis');
+
+    //download devis
+    Route::get('/download_devis/{quote}', 'download_devis')->name('download_devis');
+
+    //validate devis
+    Route::put('/validate_devis/{quote}', 'validate_devis')->name('validate_devis');
 });

@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Sales;
+use App\Models\Devis;
 use App\Models\Stock\Product;
 use Illuminate\Database\Eloquent\Model;
 
-class SaleDetail extends Model
+class Devis_details extends Model
 {
     protected $fillable = [
-        'sales_id',
+        'devis_id',
         'product_id',
         'quantity',
         'unit_price',
@@ -19,7 +19,7 @@ class SaleDetail extends Model
     ];
 
     public function sales(){
-        return $this->belongsTo(Sales::class);
+        return $this->belongsTo(Devis::class);
     }
 
     public function product(){

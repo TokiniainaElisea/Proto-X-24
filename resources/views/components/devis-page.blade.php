@@ -256,7 +256,7 @@ new class extends Component {
                             <span class="badge bg-success">
 
                                 <i class="bi bi-cart-check-fill me-1"></i>
-                                Vente en cours
+                                Produits ajoutés
 
                             </span>
 
@@ -264,7 +264,7 @@ new class extends Component {
 
                         <div class="card-body">
 
-                            <livewire:cart-list :selectedClient="$selectedClient" />
+                            <livewire:devis-list :selectedClient="$selectedClient" />
 
                         </div>
 

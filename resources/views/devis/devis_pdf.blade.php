@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/font/bootstrap-icons.css') }}">
 
-    <title>Facture {{ $sale->sale_reference }}</title>
+    <title>Devis {{ $quote->sale_reference }}</title>
 
     <link href="" rel="stylesheet">
 
@@ -144,28 +144,20 @@
             <div class="col-5 text-end">
 
                 <div class="invoice-title text-primary">
-                    Facture
+                    Devis
                 </div>
 
                 <div class="invoice-meta mt-2">
 
                     <div>
                         <strong>N° :</strong>
-                        {{ $sale->sale_reference }}
+                        {{ $quote->quote_reference }}
                     </div>
 
                     <div>
                         <strong>Date :</strong>
-                        {{ $sale->created_at->format('d/m/Y') }}
+                        {{ $quote->created_at->format('d/m/Y') }}
                     </div>
-
-                </div>
-
-                <div class="mt-3">
-
-                    <span class="bg-success text-white px-3 py-2 rounded border border-success">
-                        PAYÉE
-                    </span>
 
                 </div>
 
@@ -179,32 +171,32 @@
         <div class="border rounded p-3 mb-2 border-dark">
 
             <div class="text-dark small text-uppercase fw-bold mb-2">
-                Facturé à
+                Adréssé à
             </div>
 
             <div class="fw-bold fs-5">
 
-                {{ $sale->client->title }}
-                {{ $sale->client->name }}
-                {{ $sale->client->firstname }}
+                {{ $quote->client->title }}
+                {{ $quote->client->name }}
+                {{ $quote->client->firstname }}
 
             </div>
 
-            @if ($sale->client->address)
+            @if ($quote->client->address)
                 <div class="text-dark mt-1">
-                    {{ $sale->client->address }}
+                    {{ $quote->client->address }}
                 </div>
             @endif
 
-            @if ($sale->client->town)
+            @if ($quote->client->town)
                 <div class="text-dark">
-                    {{ $sale->client->town }}
+                    {{ $quote->client->town }}
                 </div>
             @endif
 
-            @if ($sale->client->phone)
+            @if ($quote->client->phone)
                 <div class="text-dark">
-                    Tél. : {{ $sale->client->phone }}
+                    Tél. : {{ $quote->client->phone }}
                 </div>
             @endif
 
@@ -247,7 +239,7 @@
 
                 <tbody>
 
-                    @foreach ($sale->saledetail as $detail)
+                    @foreach ($quote->devis_details as $detail)
                         <tr>
 
                             <td>
@@ -302,7 +294,7 @@
 
                     @php
 
-                        $subtotal = $sale->saledetail->sum('total_line') + $sale->saledetail->sum('line_discount');
+                        $subtotal = $quote->devis_details->sum('total_line') + $quote->devis_details->sum('line_discount');
 
                     @endphp
 
@@ -318,7 +310,7 @@
 
                     </div>
 
-                    @if ($sale->saledetail->sum('line_discount') > 0)
+                    @if ($quote->devis_details->sum('line_discount') > 0)
                         <div class="d-flex justify-content-between mb-2">
 
                             <span class="text-dark">
@@ -327,7 +319,7 @@
 
                             <span class="text-danger">
                                 -
-                                {{ number_format($sale->saledetail->sum('line_discount'), 0, ',', ' ') }}
+                                {{ number_format($quote->devis_details->sum('line_discount'), 0, ',', ' ') }}
                                 Ar
                             </span>
 
@@ -345,7 +337,7 @@
                         </span>
 
                         <span class="grand-total text-primary">
-                            {{ number_format($sale->total_price, 0, ',', ' ') }}
+                            {{ number_format($quote->total_price, 0, ',', ' ') }}
                             Ar
                         </span>
 
@@ -370,7 +362,7 @@
                     </strong>
 
                     <div class="mt-1">
-                        {{ $sale->payment_method }}
+                        {{ $quote->payment_method }}
                     </div>
 
                 </div>
@@ -378,7 +370,7 @@
             </div>
 
 
-            @if ($sale->note)
+            @if ($quote->note)
                 <div class="col-md-6">
 
                     <div class="small text-dark">
@@ -388,7 +380,7 @@
                         </strong>
 
                         <div class="mt-1">
-                            {{ $sale->note }}
+                            {{ $quote->note }}
                         </div>
 
                     </div>
@@ -407,13 +399,13 @@
 
             <div>
                 {{ $company->name }}
-                — Facture {{ $sale->sale_reference }}
+                — Devis {{ $quote->sale_reference }}
             </div>
 
         </div>
 
         <div class="text-center mt-4 no-print">
-            <a href="{{ route('show_vente', $sale) }}" class="btn btn-outline-warning px-4"> <i
+            <a href="{{ route('show_devis', $quote) }}" class="btn btn-outline-warning px-4"> <i
                     class="bi bi-arrow-left"></i> Retour </a>
 
             <button onclick="window.print()" class="btn btn-dark px-4 me-3">

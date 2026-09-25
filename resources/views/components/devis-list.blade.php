@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\SaleDetail;
-use App\Models\Sales;
+use App\Models\Devis;
+use App\Models\Devis_details;
 use App\Models\Numbering;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
@@ -21,9 +21,6 @@ new class extends Component {
 
     //payment method
     public $payment_method;
-
-    //remise
-    public $discount = 0;
 
     #[Computed]
     public function isValidOrder()
@@ -66,7 +63,7 @@ new class extends Component {
             $quantity = max(0, (int) ($product['quantity'] ?? 0));
             $line_discount = (float) ($product['line_discount'] ?? 0);
 
-            return ( $price * $quantity) - $line_discount;
+            return $price * $quantity - $line_discount;
         });
 
         return $total;
@@ -108,7 +105,6 @@ new class extends Component {
     {
         $this->selectedProducts = [];
         $this->note = '';
-        $this->discount = 0;
     }
 
     // validate order
@@ -116,83 +112,51 @@ new class extends Component {
     {
         DB::transaction(function () {
             // Création de la vente
-            $order = Sales::create([
+            $order = Devis::create([
                 'client_id' => $this->selectedClient['id'],
                 'status' => 'En cours',
                 'total_price' => $this->totalPrice,
                 'note' => $this->note,
                 'payment_method' => $this->payment_method ?? 'Cash',
             ]);
-            $salePrefix = Numbering::first() ?? 'CMD';
-            if (is_string($salePrefix)) {
+            $devisPrefix = Numbering::first() ?? 'Devis';
+            if (is_string($devisPrefix)) {
                 $order->update([
-                    'sale_reference' => $salePrefix . $order->id,
+                    'quote_reference' => $devisPrefix . $order->id,
                 ]);
             } else {
                 $order->update([
-                    'sale_reference' => $salePrefix->order_prefix . $order->id,
+                    'quote_reference' => $devisPrefix->quote_prefix . $order->id,
                 ]);
             }
 
             // Parcours des produits du panier
             foreach ($this->selectedProducts as $value) {
                 $cost_price = 0;
-                $quantityToRemove = (int) $value['quantity'];
-
                 /*
                  * On récupère les entrées de stock du produit
                  * de la plus ancienne à la plus récente.
                  */
                 $mouvements = Mouvement::where('product_id', $value['id'])->where('in_stock', '>', 0)->orderBy('enter_date', 'asc')->orderBy('id', 'asc')->lockForUpdate()->get();
 
-                // Vérification du stock disponible
-                $totalStock = $mouvements->sum('in_stock');
-
-                if ($totalStock < $quantityToRemove) {
-                    throw new \Exception('Stock insuffisant pour le produit : ' . $value['name_product']);
-                }
-
-                /*
-                 * Décrémentation FIFO
-                 */
                 foreach ($mouvements as $mouvement) {
-                    if ($quantityToRemove <= 0) {
-                        break;
-                    }
-
-                    $available = $mouvement->in_stock;
-
-                    if ($available >= $quantityToRemove) {
-                        // Cette entrée suffit à couvrir la vente
-                        $mouvement->decrement('in_stock', $quantityToRemove);
-
-                        $quantityToRemove = 0;
-                        $cost_price = $mouvement->provider_price;
-                    } else {
-                        // On consomme entièrement cette entrée
-                        $mouvement->update([
-                            'in_stock' => 0,
-                        ]);
-
-                        $quantityToRemove -= $available;
-                        $cost_price = $mouvement->provider_price;
-                    }
+                    $cost_price = $mouvement->provider_price;
                 }
 
-                // Création du détail de vente
-                SaleDetail::create([
-                    'sales_id' => $order->id,
+                // Création du détail du devis
+                Devis_details::create([
+                    'devis_id' => $order->id,
                     'product_id' => $value['id'],
                     'quantity' => $value['quantity'],
                     'unit_price' => $value['price'],
-                    'total_line' => ($value['quantity'] * $value['price']) - $value['line_discount'],
+                    'total_line' => $value['quantity'] * $value['price'] - $value['line_discount'],
                     'cost_price' => $cost_price * $value['quantity'],
-                    'line_discount' => $value['line_discount']
+                    'line_discount' => $value['line_discount'],
                 ]);
             }
         });
 
-        return to_route('ventes')->with('success', 'Et une vente de plus');
+        return to_route('devis')->with('success', 'Et un devis de plus');
     }
 };
 
@@ -214,8 +178,8 @@ new class extends Component {
                                 style="width: 50px; height: 50px;">
 
                                 <img class="img-fluid"
-                                            src="{{ $product['image_path'] ? asset($product['image_path']) : asset('uploads/product/sans.png') }}"
-                                            alt="">
+                                    src="{{ $product['image_path'] ? asset($product['image_path']) : asset('uploads/product/sans.png') }}"
+                                    alt="">
 
                             </div>
 
@@ -236,7 +200,7 @@ new class extends Component {
 
                                 <span class="text-success fw-semibold">
 
-                                    {{ number_format(($product['price'] * (int) $product['quantity']) - (float) $product['line_discount'], 0, ',', ' ') }}
+                                    {{ number_format($product['price'] * (int) $product['quantity'] - (float) $product['line_discount'], 0, ',', ' ') }}
                                     Ar
 
                                 </span>
@@ -325,9 +289,8 @@ new class extends Component {
             </h6>
 
             <small class="text-muted">
-                Ajoutez des produits pour commencer la vente.
+                Ajoutez des produits.
             </small>
-
         </div>
     @endforelse
 
@@ -342,7 +305,7 @@ new class extends Component {
                 <h6 class="fw-bold mb-0">
 
                     <i class="bi bi-receipt me-2 text-primary"></i>
-                    Informations de la vente
+                    Informations complémentaires
 
                 </h6>
 
@@ -428,7 +391,7 @@ new class extends Component {
                     <div class="d-flex justify-content-between align-items-center">
 
                         <span class="fw-semibold text-muted">
-                            Total de la commande
+                            Total à payer
                         </span>
 
                         <span class="fs-4 fw-bold text-success">
@@ -458,7 +421,7 @@ new class extends Component {
                 <button type="submit" wire:click="validateOrder" class="btn btn-primary" @disabled(!$this->isValidOrder)>
 
                     <i class="bi bi-check-circle-fill me-1"></i>
-                    Valider la vente
+                    Créer
 
                 </button>
 

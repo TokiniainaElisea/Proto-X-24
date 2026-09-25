@@ -42,14 +42,16 @@ new class extends Component {
                         <div class="row align-items-center">
 
                             {{-- Informations produit --}}
-                            <div class="col-8">
+                            <div class="col">
 
                                 <div class="d-flex align-items-center mb-2">
 
                                     <div class="rounded bg-light d-flex align-items-center justify-content-center me-3"
                                         style="width: 45px; height: 45px;">
 
-                                        <img class="img-fluid" src="{{ $product->image_path ? asset($product->image_path) : asset('uploads/product/sans.png') }}" alt="">
+                                        <img class="img-fluid"
+                                            src="{{ $product->image_path ? asset($product->image_path) : asset('uploads/product/sans.png') }}"
+                                            alt="">
 
                                     </div>
 
@@ -94,40 +96,36 @@ new class extends Component {
                                         </span>
                                     @endif
 
-
-                                    {{-- Prix --}}
-                                    <span class="fw-bold text-success">
-
-                                        {{ number_format($product->price, 0, ',', ' ') }} Ar
-
-                                    </span>
-
                                 </div>
 
                             </div>
 
+                        </div>
+                        {{-- Action --}}
+                        <div class="d-flex justify-content-between">
+                            {{-- Prix --}}
+                            <span class="fw-bold text-success">
 
-                            {{-- Action --}}
-                            <div class="col-4 text-end">
+                                {{ number_format($product->price, 0, ',', ' ') }} Ar
 
-                                @if ($product->mouvement->sum('in_stock') > 0)
-                                    <button type="button" class="btn btn-outline-primary"
-                                        wire:click="addProduct({{ $product }}, {{ $product->mouvement->sum('in_stock') }})">
+                            </span>
 
-                                        <i class="bi bi-cart-plus-fill me-1"></i>
-                                        Ajouter
+                            @if ($product->mouvement->sum('in_stock') > 0)
+                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                    wire:click="addProduct({{ $product }}, {{ $product->mouvement->sum('in_stock') }})">
 
-                                    </button>
-                                @else
-                                    <button type="button" class="btn btn-outline-secondary" disabled>
+                                    <i class="bi bi-cart-plus-fill me-1"></i>
+                                    Ajouter
 
-                                        <i class="bi bi-cart-x me-1"></i>
-                                        Indisponible
+                                </button>
+                            @else
+                                <button type="button" class="btn btn-outline-secondary btn-sm" disabled>
 
-                                    </button>
-                                @endif
+                                    <i class="bi bi-cart-x me-1"></i>
+                                    Indisponible
 
-                            </div>
+                                </button>
+                            @endif
 
                         </div>
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductRequest extends FormRequest
+class DevisFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,11 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_product' => ['required','min:4'],
-            //'reference' => ['required'],
-            'image_path' => ['nullable'],
-            'price' => ['required', 'numeric'],
-            'id_category' => ['required'],
-            'size' => ['required'],
-            'color' => ['required'],
-            'matter' => ['required'],
-            'id_provider' => ['required'],
+            'begin' => ['nullable'],
+            'ending' => ['nullable'],
+            'quote_reference' => ['nullable', 'string'],
+            'montant' => ['nullable', 'numeric'],
+            'name_client' => ['nullable', 'string'], 
         ];
     }
 }

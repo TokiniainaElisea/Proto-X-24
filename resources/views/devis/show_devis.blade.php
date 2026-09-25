@@ -11,7 +11,7 @@
 
             <div>
 
-                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary mb-2">
+                <a href="{{ route('devis') }}" class="btn btn-outline-secondary mb-2">
 
                     <i class="bi bi-arrow-left me-1"></i>
                     Retour
@@ -22,14 +22,14 @@
 
                     <i class="bi bi-receipt-cutoff text-primary me-2"></i>
 
-                    Détails de la vente
+                    Détails du devis
 
                 </h2>
 
                 <small class="text-muted">
 
-                    Commande :
-                    <strong>{{ $sale->sale_reference }}</strong>
+                    Devis :
+                    <strong>{{ $quote->quote_reference }}</strong>
 
                 </small>
 
@@ -38,19 +38,26 @@
 
             <div class="d-flex">
 
-                <span class="badge bg-success fs-6 px-3 py-2 me-2">
+                @if ($isValidable && $quote->status == 'Validé' && $quote->status == 'Annulé')
+                    <button class="btn btn-primary me-2" data-bs-target="#confirmValidateQuoteModalLabel"
+                        data-bs-toggle="modal">
+                        <i class="bi bi-check-circle-fill"> </i>
+                        Valider
+                    </button>
+                @endif
+                @if ($quote->status !== 'Validé')
+                    <a href="" class="btn btn-danger me-2">
+                        <i class="bi bi-x-circle-fill"></i>
 
-                    <i class="bi bi-check-circle-fill me-1"></i>
+                        Annuler
+                    </a>
+                @endif
 
-                    Vente enregistrée
-
-                </span>
-
-                <a href="{{ route('downloadInvoice', $sale) }}" class="btn btn-primary">
+                <a href="{{ route('download_devis', $quote) }}" class="btn btn-outline-primary">
 
                     <i class="bi bi-download me-1"></i>
 
-                    Facture
+                    Imprimer
 
                 </a>
 
@@ -87,8 +94,8 @@
 
                                 <strong>
 
-                                    {{ $sale->client->name ?? 'Non défini' }}
-                                    {{ $sale->client->firstname ?? '' }}
+                                    {{ $quote->client->name ?? 'Non défini' }}
+                                    {{ $quote->client->firstname ?? '' }}
 
                                 </strong>
 
@@ -102,7 +109,7 @@
 
                                 <strong>
 
-                                    {{ $sale->client->client_number ?? 'Non défini' }}
+                                    {{ $quote->client->client_number ?? 'Non défini' }}
 
                                 </strong>
 
@@ -123,7 +130,7 @@
 
                                     <i class="bi bi-telephone text-success me-1"></i>
 
-                                    {{ $sale->client->phone ? '0' . $sale->client->phone : 'Indisponible' }}
+                                    {{ $quote->client->phone ? '0' . $quote->client->phone : 'Indisponible' }}
 
                                 </span>
 
@@ -140,7 +147,7 @@
 
                                     <i class="bi bi-geo-alt text-danger me-1"></i>
 
-                                    {{ $sale->client->town ?? 'Indisponible' }}
+                                    {{ $quote->client->town ?? 'Indisponible' }}
 
                                 </span>
 
@@ -157,7 +164,7 @@
 
                             <span>
 
-                                {{ $sale->client->adress ?? 'Indisponible' }}
+                                {{ $quote->client->adress ?? 'Indisponible' }}
 
                             </span>
 
@@ -179,7 +186,7 @@
 
                         <i class="bi bi-info-circle-fill text-info me-2"></i>
 
-                        Informations sur la vente
+                        Informations sur le devis
 
                     </div>
 
@@ -190,11 +197,11 @@
                             <div>
 
                                 <small class="text-muted d-block">
-                                    N° de commande
+                                    N°
                                 </small>
 
                                 <strong>
-                                    {{ $sale->sale_reference }}
+                                    {{ $quote->quote_reference }}
                                 </strong>
 
                             </div>
@@ -207,7 +214,7 @@
                                 </small>
 
                                 <strong>
-                                    {{ $sale->created_at }}
+                                    {{ $quote->created_at }}
                                 </strong>
 
                             </div>
@@ -227,7 +234,7 @@
 
                                     <i class="bi bi-credit-card me-1"></i>
 
-                                    {{ $sale->payment_method ?? 'Non défini' }}
+                                    {{ $quote->payment_method ?? 'Non défini' }}
 
                                 </span>
 
@@ -241,7 +248,7 @@
                                 </small>
 
                                 <strong>
-                                    {{ $sale->saledetail->sum('quantity') }}
+                                    {{ $quote->devis_details->sum('quantity') }}
                                 </strong>
 
                                 <small class="text-muted">
@@ -252,16 +259,41 @@
 
                         </div>
 
+                        <div class="d-flex mb-3 justify-content-between align-items-center">
+                            <span class="fw-semibold">
+                                Statut
+                            </span>
+                            @if ($quote->status == 'En cours')
+                                <span class="badge bg-success fs-6">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    {{ $quote->status }}
+
+                                </span>
+                            @endif
+
+                            @if ($quote->status == 'Annulé')
+                                <span class="badge bg-danger fs-6">
+
+                                    <i class="bi bi-x-circle-fill"></i>
+
+                                    {{ $quote->status }}
+
+                                </span>
+                            @endif
+                        </div>
+
 
                         <div class="d-flex justify-content-between align-items-center">
 
                             <span class="fw-semibold">
-                                Total de la vente
+                                Total
                             </span>
 
                             <span class="badge bg-success fs-5">
 
-                                {{ number_format($sale->total_price, 0, ',', ' ') }} Ar
+                                {{ number_format($quote->total_price, 0, ',', ' ') }} Ar
 
                             </span>
 
@@ -283,7 +315,7 @@
 
                 <i class="bi bi-cart-check-fill text-success me-2"></i>
 
-                Produits de la commande
+                Produits
 
             </div>
 
@@ -325,7 +357,7 @@
 
                         <tbody>
 
-                            @foreach ($sale->saledetail as $detail)
+                            @foreach ($quote->devis_details as $detail)
                                 @php
 
                                     $unitPrice = $detail->price ?? $detail->product->price;
@@ -406,7 +438,6 @@
                                     <td class="text-center">
 
                                         @if ($lineDiscount > 0)
-
                                             <small class="d-block text-danger mt-1">
 
                                                 - {{ number_format($discountAmount, 0, ',', ' ') }} Ar
@@ -478,9 +509,8 @@
 
                         @php
 
-                            $totalDiscount = $sale->saledetail->sum(function ($detail) {
-
-                                return $detail->line_discount ;
+                            $totalDiscount = $quote->devis_details->sum(function ($detail) {
+                                return $detail->line_discount;
                             });
 
                             $hasDiscount = $totalDiscount > 0;
@@ -550,7 +580,7 @@
 
                         @php
 
-                            $subtotal = $sale->saledetail->sum(function ($detail) {
+                            $subtotal = $quote->devis_details->sum(function ($detail) {
                                 $unitPrice = $detail->price ?? $detail->product->price;
 
                                 return $unitPrice * $detail->quantity;
@@ -599,12 +629,12 @@
                         <div class="d-flex justify-content-between align-items-center">
 
                             <strong>
-                                Total payé
+                                Total à payer
                             </strong>
 
                             <span class="badge bg-success fs-5">
 
-                                {{ number_format($sale->total_price, 0, ',', ' ') }} Ar
+                                {{ number_format($quote->total_price, 0, ',', ' ') }} Ar
 
                             </span>
 
@@ -626,19 +656,19 @@
 
                 <i class="bi bi-chat-left-text-fill text-info me-2"></i>
 
-                Note de la vente
+                Note
 
             </div>
 
 
             <div class="card-body">
 
-                @if (!empty($sale->note))
+                @if (!empty($quote->note))
                     <div class="alert alert-light border mb-0">
 
                         <i class="bi bi-quote text-primary me-2"></i>
 
-                        {{ $sale->note }}
+                        {{ $quote->note }}
 
                     </div>
                 @else
@@ -646,7 +676,7 @@
 
                         <i class="bi bi-dash-circle me-1"></i>
 
-                        Aucune note pour cette vente.
+                        Aucune note.
 
                     </span>
                 @endif
@@ -656,5 +686,9 @@
         </div>
 
     </div>
+
+    @include('devis.parts.validate_devis', [
+        'id' => 'confirmValidateQuoteModalLabel',
+    ])
 
 @endsection

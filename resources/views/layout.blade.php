@@ -14,7 +14,7 @@
         @include('parts.header')
     <div class="container-fluid d-flex">
             @include('parts.sidebar')
-            <div class="flex-grow-1">
+            <div class="flex-grow-1 my-2">
                 @yield('content')
             </div>
     </div>

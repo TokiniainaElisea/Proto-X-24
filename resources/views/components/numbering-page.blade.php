@@ -11,6 +11,7 @@ new class extends Component
     public $order_prefix;
     public $client_prefix;
     public $product_prefix;
+    public $quote_prefix;
 
     public function mount()
     {
@@ -21,6 +22,7 @@ new class extends Component
             $this->order_prefix = $this->numbering->order_prefix;
             $this->client_prefix = $this->numbering->client_prefix;
             $this->product_prefix = $this->numbering->product_prefix;
+            $this->quote_prefix = $this->numbering->quote_prefix;
 
         }
     }
@@ -31,12 +33,14 @@ new class extends Component
         if (!$this->numbering) {
             return filled($this->order_prefix)
                 || filled($this->client_prefix)
-                || filled($this->product_prefix);
+                || filled($this->product_prefix)
+                || filled($this->quote_prefix);
         }
 
         return $this->order_prefix !== $this->numbering->order_prefix
             || $this->client_prefix !== $this->numbering->client_prefix
-            || $this->product_prefix !== $this->numbering->product_prefix;
+            || $this->product_prefix !== $this->numbering->product_prefix
+            || $this->quote_prefix !== $this->numbering->quote_prefix;
     }
 
     public function save()
@@ -45,6 +49,7 @@ new class extends Component
             'order_prefix' => $this->order_prefix,
             'client_prefix' => $this->client_prefix,
             'product_prefix' => $this->product_prefix,
+            'quote_prefix'=> $this->quote_prefix
         ];
 
         if ($this->numbering) {
@@ -80,7 +85,7 @@ new class extends Component
             <div class="row g-4">
 
                 {{-- Commande --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
 
                     <div class="border rounded-3 p-3 h-100">
 
@@ -121,7 +126,7 @@ new class extends Component
 
 
                 {{-- Client --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
 
                     <div class="border rounded-3 p-3 h-100">
 
@@ -162,7 +167,7 @@ new class extends Component
 
 
                 {{-- Produit --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
 
                     <div class="border rounded-3 p-3 h-100">
 
@@ -201,6 +206,45 @@ new class extends Component
 
                 </div>
 
+                <div class="col-md-3">
+
+                    <div class="border rounded-3 p-3 h-100">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class=" bg-opacity-10 rounded-3
+                                        d-flex align-items-center justify-content-center me-2"
+                                style="width: 42px; height: 42px;">
+
+                                <i class="bi bi-person-vcard-fill text-success"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>Devis</strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    Numéro de devis
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <label class="form-label fw-semibold">
+                            Préfixe
+                        </label>
+
+                        <input type="text" class="form-control" wire:model.live="quote_prefix" maxlength="10"
+                            placeholder="DEVIS">
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
@@ -229,7 +273,7 @@ new class extends Component
             <div class="row g-3">
 
                 {{-- Commande --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
 
                     <div class=" bg-opacity-10 rounded-3 p-4 text-center">
 
@@ -240,7 +284,7 @@ new class extends Component
                         </div>
 
                         <div class="fs-4 fw-bold text-primary">
-                            {{ $order_prefix ?: 'CMD' }}-0125
+                            {{ $order_prefix ?: 'CMD' }}0125
                         </div>
 
                     </div>
@@ -249,7 +293,7 @@ new class extends Component
 
 
                 {{-- Client --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
 
                     <div class=" bg-opacity-10 rounded-3 p-4 text-center">
 
@@ -260,7 +304,7 @@ new class extends Component
                         </div>
 
                         <div class="fs-4 fw-bold text-success">
-                            {{ $client_prefix ?: 'CLI' }}-042
+                            {{ $client_prefix ?: 'CLI' }}042
                         </div>
 
                     </div>
@@ -269,7 +313,7 @@ new class extends Component
 
 
                 {{-- Produit --}}
-                <div class="col-md-4">
+                <div class="col-md-3">
 
                     <div class=" bg-opacity-10 rounded-3 p-4 text-center">
 
@@ -280,7 +324,24 @@ new class extends Component
                         </div>
 
                         <div class="fs-4 fw-bold text-warning">
-                            {{ $product_prefix ?: 'PRD' }}-0318
+                            {{ $product_prefix ?: 'PRD' }}0318
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+
+                    <div class=" bg-opacity-10 rounded-3 p-4 text-center">
+
+                        <i class="bi bi-cart-check-fill text-primary fs-2"></i>
+
+                        <div class="text-muted small mt-2">
+                            Devis
+                        </div>
+
+                        <div class="fs-4 fw-bold text-primary">
+                            {{ $quote_prefix ?: 'DEVIS' }}0125
                         </div>
 
                     </div>
