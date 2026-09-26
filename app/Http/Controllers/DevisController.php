@@ -194,4 +194,14 @@ class DevisController extends Controller
 
         return to_route('ventes')->with('success', 'Et une vente de plus');
     }
+
+    public function cancel_devis(Devis $quote){
+        //je recharge au cas où
+        $_quote = Devis::find($quote->id);
+        $quote->update([
+            'status' => 'Annulé'
+        ]);
+
+        return to_route('devis')->with('success', 'Devis annulé');
+    }
 }

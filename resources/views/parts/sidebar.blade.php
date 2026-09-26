@@ -89,8 +89,8 @@
 
         <li class="nav-item">
 
-            <a href="{{ route('bilan') }}"
-                class="nav-link text-white rounded-3 {{ request()->routeIs('bilan') ? 'active bg-primary' : '' }} ">
+            <a href="{{ route('expenses') }}"
+                class="nav-link text-white rounded-3 {{ request()->routeIs('expenses*') ? 'active bg-primary' : '' }} ">
                 <i class="bi bi-receipt me-2"></i>
                 Dépenses
 

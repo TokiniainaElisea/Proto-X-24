@@ -26,6 +26,9 @@ class ProductController extends Controller
             $query->where('category_id', '=', $request->id_category);
             $name_category = Category::find($request->id_category);
         }
+        if($request->has('reference') && !empty($request->reference)){
+            $query->where('reference', '=', $request->reference);
+        }
         return view('products.products', [
             'categories'    => Category::all(),
             'name_category' => $name_category,

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BilanPeriodeRequest;
+use App\Models\Expense;
 use App\Models\SaleDetail;
 use App\Models\Sales;
 use App\Models\Stock\Category;
@@ -182,6 +183,12 @@ class BilanController extends Controller
         ];
     }
 
+    public function totalExpenses($begin, $ending)
+    {
+        return Expense::whereBetween('created_at', [$begin, $ending])
+            ->sum('amount');
+    }
+
     public function index(BilanPeriodeRequest $periode)
     {
         $p = $periode->validated();
@@ -195,6 +202,7 @@ class BilanController extends Controller
         $salesEvolution = [];
         $topProducts    = [];
         $stock          = $this->stockState();
+        $totalExpenses  = null;
 
         if ($p) {
 
@@ -241,6 +249,12 @@ class BilanController extends Controller
                 $p['begin'] . ' 00:00:00',
                 $p['ending'] . ' 23:59:59'
             );
+
+            //total des dépenses
+            $totalExpenses = $this->totalExpenses(
+                $p['begin'] . ' 00:00:00',
+                $p['ending'] . ' 23:59:59'
+            );
         }
 
         return view('bilan.bilan', [
@@ -253,8 +267,9 @@ class BilanController extends Controller
             'products'             => $products,
             'meanSale'             => $meanSale,
             'clients'              => $clients,
-            'benefice'             => $benefice,
+            'benefice'             => $benefice - $totalExpenses,
             'turnover'             => $turnover,
+            'totalExpenses'        => $totalExpenses,
             'begin'                => $p['begin'] ?? null,
             'ending'               => $p['ending'] ?? null,
         ]);

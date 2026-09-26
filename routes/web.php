@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DevisController;
+use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\MouvementController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
@@ -164,4 +165,22 @@ Route::prefix('/devis')->controller(DevisController::class)->group(function(){
 
     //validate devis
     Route::put('/validate_devis/{quote}', 'validate_devis')->name('validate_devis');
+
+    //cancel devis
+    Route::put('/cancel_devis/{quote}', 'cancel_devis')->name('cancel_devis');
+});
+
+//expenses controller
+Route::prefix('/expenses')->controller(ExpensesController::class)->group(function(){
+    //index
+    Route::get('/', 'index')->name('expenses');
+
+    //new ewpense
+    Route::post('/new_expense', 'new_expense')->name('new_expense');
+
+    //destroy expense
+    Route::delete('/delete/{expense}', 'expense_destroy')->name('expense_destroy');
+
+    //modifier
+    Route::put('/update/{expense}', 'update_expense')->name('update_expense');
 });

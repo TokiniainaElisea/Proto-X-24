@@ -1,7 +1,7 @@
 <div class="row g-4 mb-4">
 
     <!-- Chiffre d'affaires -->
-    <div class="col-xl col-md-6">
+    <div class=" col-md-6">
 
         <div class="card border-0 shadow-sm h-100">
 
@@ -37,9 +37,45 @@
 
     </div>
 
+    <div class="col-md-6">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="text-muted">
+                            Dépenses total
+                        </div>
+
+                        <div class="fs-3 fw-bold text-primary">
+
+                            {{$totalExpenses}}
+
+                            <small class="fs-6">Ar</small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="fs-1 text-primary">
+                        <i class="bi bi-cash-stack"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 
     <!-- Bénéfice -->
-    <div class="col-xl col-md-6">
+    <div class="col-md-6">
 
         <div class="card border-0 shadow-sm h-100">
 
@@ -152,7 +188,7 @@
     </div>
 
     <!-- Panier moyen -->
-    <div class="col-xl col-md-6">
+    <div class="col-md-6">
 
         <div class="card border-0 shadow-sm h-100">
 

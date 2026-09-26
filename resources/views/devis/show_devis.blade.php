@@ -38,19 +38,19 @@
 
             <div class="d-flex">
 
-                @if ($isValidable && $quote->status == 'Validé' && $quote->status == 'Annulé')
+                @if ($isValidable && $quote->status !== 'Validé' && $quote->status !== 'Annulé')
                     <button class="btn btn-primary me-2" data-bs-target="#confirmValidateQuoteModalLabel"
                         data-bs-toggle="modal">
                         <i class="bi bi-check-circle-fill"> </i>
                         Valider
                     </button>
                 @endif
-                @if ($quote->status !== 'Validé')
-                    <a href="" class="btn btn-danger me-2">
+                @if ($quote->status !== 'Validé' && $quote->status !== 'Annulé')
+                    <button class="btn btn-danger me-2" data-bs-target="#confirmCancelQuoteModal" data-bs-toggle="modal">
                         <i class="bi bi-x-circle-fill"></i>
 
                         Annuler
-                    </a>
+                    </button>
                 @endif
 
                 <a href="{{ route('download_devis', $quote) }}" class="btn btn-outline-primary">
@@ -689,6 +689,10 @@
 
     @include('devis.parts.validate_devis', [
         'id' => 'confirmValidateQuoteModalLabel',
+    ])
+
+    @include('devis.parts.cancel_devis', [
+        'id' => 'confirmCancelQuoteModal'
     ])
 
 @endsection

@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchProductRequest extends FormRequest
+class ExpensesCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +21,10 @@ class SearchProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'name_product' => ['string', 'min:0', 'nullable'],
-            'reference' => ['string', 'nullable']
+            'label'  => ['nullable'],
+            'amount' => ['nullable'],
+            'type'   => ['nullable'],
+            'note'   => ['nullable'],
         ];
     }
 }
