@@ -11,7 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SettingController;
-use App\Models\STock\Category;
+use App\Models\Stock\Category;
 use Illuminate\Support\Facades\Route;
 
 //dashboard

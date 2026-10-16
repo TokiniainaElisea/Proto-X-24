@@ -159,4 +159,10 @@ new class extends Component {
 
     </div>
 
+    @if ($products->hasPages())
+        <div class="my-1">
+            {{ $products->links() }}
+        </div>
+    @endif
+
 </div>

@@ -25,6 +25,7 @@
     </div>
 @else
     @include('bilan.parts.bilan_resume')
+    @include('bilan.parts.bilan_in_stock')
     <div class="row mb-3">
         @include('bilan.parts.bilan_categories')
         @include('bilan.parts.bilan_per_month')

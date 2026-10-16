@@ -6,6 +6,7 @@ use App\Models\Expense;
 use App\Models\SaleDetail;
 use App\Models\Sales;
 use App\Models\Stock\Category;
+use App\Models\Stock\Mouvement;
 use App\Models\Stock\Product;
 
 class BilanController extends Controller
@@ -203,6 +204,9 @@ class BilanController extends Controller
         $topProducts    = [];
         $stock          = $this->stockState();
         $totalExpenses  = null;
+        $stockQuantity = null;
+        $stockCostValue = null;
+        $stockSellingValue = null;
 
         if ($p) {
 
@@ -255,6 +259,25 @@ class BilanController extends Controller
                 $p['begin'] . ' 00:00:00',
                 $p['ending'] . ' 23:59:59'
             );
+
+            // Quantité totale actuellement en stock
+            $stockQuantity = Mouvement::where('in_stock', '>', 0)
+                ->sum('in_stock');
+
+            // Valeur actuelle du stock au prix d'achat
+            $stockCostValue = Mouvement::where('in_stock', '>', 0)
+                ->selectRaw('SUM(in_stock * provider_price) AS total')
+                ->value('total') ?? 0;
+
+            // Valeur commerciale du stock au prix de vente actuel
+            $stockSellingValue = Mouvement::query()
+                ->join('products', 'products.id', '=', 'mouvements.product_id')
+                ->where('mouvements.in_stock', '>', 0)
+                ->selectRaw(
+                    'SUM(mouvements.in_stock * products.price) AS total'
+                )
+                ->value('total') ?? 0;
+
         }
 
         return view('bilan.bilan', [
@@ -270,6 +293,9 @@ class BilanController extends Controller
             'benefice'             => $benefice - $totalExpenses,
             'turnover'             => $turnover,
             'totalExpenses'        => $totalExpenses,
+            'stockQuantity'        => $stockQuantity,
+            'stockCostValue'       => $stockCostValue,
+            'stockSellingValue'    => $stockSellingValue,
             'begin'                => $p['begin'] ?? null,
             'ending'               => $p['ending'] ?? null,
         ]);
